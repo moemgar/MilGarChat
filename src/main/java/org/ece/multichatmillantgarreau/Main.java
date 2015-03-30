@@ -11,6 +11,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import org.ece.multichatmillantgarreau.client.view.GuiClient;
 import org.ece.multichatmillantgarreau.server.serverchannel.ServerNIO;
 import org.ece.multichatmillantgarreau.server.servermt.MultiThreadedServer;
@@ -28,7 +29,6 @@ public class Main {
 
     public static void main(String[] args) {
         
-        System.out.println("ok");
         int port = 8080;
         String address = null;
         try {
@@ -81,10 +81,18 @@ public class Main {
                     break;
                 case 'c':
                     new GuiClient(port,address);
-
+                    
+                    
                     break;
                 default:
-                    System.out.println("Invalid option");
+                   System.out.println("Usage: java -jar target/multichat -0.0.1"
+                            + "-SNAPSHOT.jar [OPTION]...\n"
+                            + "-a, --address set the IP address\n"
+                            + "-h, --help display this help and quit\n"
+                            + "-n, --nio use NIOs for the server\n"
+                            + "-p, --port=PORT set the port\n"
+                            + "-s, --server start the server\n"
+                    + "-c, --client start a client ");
             }
 
         }

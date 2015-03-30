@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.ece.multichatmillantgarreau.client.Client;
+import org.ece.multichatmillantgarreau.client.ClientGuiHandler;
 import org.ece.multichatmillantgarreau.client.Received;
 
 
@@ -38,14 +39,14 @@ public class GuiClient extends JFrame implements ActionListener {
     private String defaultHost;
 
     // Constructor connection receiving a socket number
-    public GuiClient( int port,String host) {
+    public GuiClient(int port, String host) {
 
         super("Gui Client");
         defaultPort = port;
         defaultHost = host;
         boolean con = true;
         try {
-            
+
             client = new Client(port, host);
             client.start();
             System.out.println("ok");
@@ -58,7 +59,7 @@ public class GuiClient extends JFrame implements ActionListener {
         if (con) {
             // The NorthPanel with:
             JPanel northPanel = new JPanel(new GridLayout(2, 1));
-           send = new JButton("send");
+            send = new JButton("send");
             send.addActionListener(this);
 
             tf = new JTextField("Message");
@@ -78,14 +79,12 @@ public class GuiClient extends JFrame implements ActionListener {
             setSize(400, 400);
             setVisible(true);
             tf.requestFocus();
-             Thread t3 = new Thread(new Received(this.client.getIn(),this.client.getSocket(),this.ta));
-             t3.start();
-        }
-        else{
-            System.err.println("Failed connexion to server");
-        }
+            ClientGuiHandler x=new ClientGuiHandler(this.client.getIn(), this.client.getSocket(), ta);
+            x.execute();
 
-    }
+            
+
+    }}
 
     // called by the Client to append text in the TextArea 
     void append(String str) {
@@ -99,16 +98,11 @@ public class GuiClient extends JFrame implements ActionListener {
      * Button or JTextField clicked
      */
     public void actionPerformed(ActionEvent e) {
-        System.out.println("fsd");
-        if (e.getSource()==this.send) {
+        if (e.getSource() == this.send) {
             System.out.println(tf.getText());
-            append(tf.getText());
+            append("\n"+tf.getText());
         }
 
-       
-
     }
-
- 
 
 }
